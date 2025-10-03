@@ -88,6 +88,7 @@ def show_login_signup():
                     st.session_state["logged_in"] = True
                     st.session_state["username"] = username
                     st.success(msg)
+                    st.experimental_rerun()  # Immediately rerun to update state
                 else:
                     st.error(msg)
 
@@ -98,7 +99,7 @@ def show_products():
     for idx, img_file in enumerate(img_files):
         img_path = os.path.join(TRAINED_DB_PATH, img_file)
         with cols[idx % 4]:
-            st.image(img_path, caption=img_file, use_column_width=True)
+            st.image(img_path, caption=img_file, use_container_width=True)
 
 def init_session_state():
     if "feature_vectors" not in st.session_state or st.session_state.feature_vectors is None:
@@ -184,7 +185,7 @@ def page_home():
         <h1 style='text-align: center; color: #2E86C1;'>E-commerce Visual Search</h1>
         <p style='text-align: center;'>Welcome to our modern e-commerce platform. Browse products, search visually, and enjoy a seamless experience!</p>
     """, unsafe_allow_html=True)
-    st.image("https://images.unsplash.com/photo-1515168833906-d2a3b82b1a48?auto=format&fit=crop&w=800&q=80", use_column_width=True)
+    st.image("https://images.unsplash.com/photo-1515168833906-d2a3b82b1a48?auto=format&fit=crop&w=800&q=80", use_container_width=True)
 
 def page_products():
     st.markdown("<h2 style='color:#117A65;'>Product Gallery</h2>", unsafe_allow_html=True)
@@ -203,7 +204,7 @@ def page_visual_search():
     uploaded_img_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg"])
     if uploaded_img_file is not None:
         uploaded_img = Image.open(uploaded_img_file)
-        st.image(uploaded_img, caption="Uploaded Image", use_column_width=True)
+    st.image(uploaded_img, caption="Uploaded Image", use_container_width=True)
         with st.spinner("Predicting class label..."):
             label = predict_class_label(uploaded_img_file, model)
             st.info(f"Predicted class: {label}")
@@ -230,7 +231,7 @@ def page_visual_search():
                     st.success("Similar products found!")
                     for i, similar_image in enumerate(similar_images):
                         image = Image.open(similar_image)
-                        st.image(image, caption=f"Similar Product {i + 1}", use_column_width=True)
+                        st.image(image, caption=f"Similar Product {i + 1}", use_container_width=True)
                         st.write("")
                 else:
                     st.write("No similar products found!")
