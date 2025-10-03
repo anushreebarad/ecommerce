@@ -101,10 +101,14 @@ def show_products():
             st.image(img_path, caption=img_file, use_column_width=True)
 
 def init_session_state():
-    if "feature_vectors" not in st.session_state:
-        st.session_state.feature_vectors = None
-    if "image_paths" not in st.session_state:
-        st.session_state.image_paths = None
+    if "feature_vectors" not in st.session_state or st.session_state.feature_vectors is None:
+        model = load_model()
+        feature_vectors, image_paths = get_feature_vectors_from_db(TRAINED_DB_PATH, model)
+        st.session_state.feature_vectors = feature_vectors
+        st.session_state.image_paths = image_paths
+    if "image_paths" not in st.session_state or st.session_state.image_paths is None:
+        # Already set above, but keep for safety
+        st.session_state.image_paths = []
 
 
 @st.cache_resource
@@ -244,6 +248,9 @@ def page_profile():
 
 def main():
     st.set_page_config(page_title="E-commerce Visual Search", layout="wide")
+    # Initialize session state and cache expensive resources only once
+    init_session_state()
+
     # Sidebar branding
     st.sidebar.image("https://cdn-icons-png.flaticon.com/512/1170/1170678.png", width=80)
     st.sidebar.title("E-commerce Visual Search")

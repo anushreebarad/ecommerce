@@ -1,0 +1,9 @@
+[tool.streamlit]
+# Main entry point of your app
+main = "main.py"
+
+# Optional: Set the app title
+# title = "E-commerce Visual Search"
+
+# Optional: Set the Python version (uncomment if needed)
+# python_version = "3.10"
