@@ -204,7 +204,7 @@ def page_visual_search():
     uploaded_img_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg"])
     if uploaded_img_file is not None:
         uploaded_img = Image.open(uploaded_img_file)
-    st.image(uploaded_img, caption="Uploaded Image", use_container_width=True)
+        st.image(uploaded_img, caption="Uploaded Image", use_container_width=True)
         with st.spinner("Predicting class label..."):
             label = predict_class_label(uploaded_img_file, model)
             st.info(f"Predicted class: {label}")
